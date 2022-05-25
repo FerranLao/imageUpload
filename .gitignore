@@ -2,6 +2,10 @@
 /dist
 /node_modules
 
+#stored data
+/output
+/temp
+
 # Logs
 logs
 *.log

@@ -12,6 +12,6 @@ export class AppController {
   async getHello(
     @UploadedFile() file: Express.Multer.File
   ): Promise<Record<string, any>> {
-    return this.appService.getHello(file);
+    return this.appService.createTasks(file);
   }
 }
