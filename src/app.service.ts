@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import * as sharp from "sharp";
-import * as md5 from "md5";
-import * as fs from "fs";
-import { resolve } from "path";
+import * as sharp from 'sharp';
+import * as md5 from 'md5';
+import * as fs from 'fs';
+import { resolve } from 'path';
 import { Task, TaskDocument, TaskStatus } from './schemas/task.schema';
-import { ImageDocument } from './schemas/image.schema';
+import { ImageDocument, Image } from './schemas/image.schema';
 
 const AVAILABLE_RES = [800, 1024];
 
@@ -14,22 +14,24 @@ const AVAILABLE_RES = [800, 1024];
 export class AppService {
   constructor(
     @InjectModel(Task.name) private taskModel: Model<TaskDocument>,
-    @InjectModel(Image.name) private imageModel: Model<ImageDocument>
+    @InjectModel(Image.name) private imageModel: Model<ImageDocument>,
   ) {}
 
+  async getTask(id: string): Promise<Task> {
+    return await this.taskModel.findById(id);
+  }
 
   async createTasks(file): Promise<Record<string, any>> {
     const res = await Promise.all(
       AVAILABLE_RES.map((resolution) =>
-        this.newTask(resolution, file.originalname, file.buffer)
-      )
+        this.newTask(resolution, file.originalname, file.buffer),
+      ),
     );
 
     return res;
   }
 
-
-  async newTask(resolution, name, buffer) {
+  private async newTask(resolution, name, buffer) {
     const task = await this.taskModel.create({
       path: resolve(`output/${name}/${resolution}`),
     });
@@ -37,10 +39,10 @@ export class AppService {
     return task;
   }
 
-  async processImage(task, res: number, name: string, file: Buffer) {
+  private async processImage(task, res: number, name: string, file: Buffer) {
     try {
-      const tempDir = resolve(`temp/${name}/${res}`);
-      const tempPath = tempDir + "/image";
+      const tempDir = resolve(`temp/${name}${res}`);
+      const tempPath = tempDir + '/image';
       this.createFolders(tempDir);
 
       const created = await sharp(file).resize(res).jpeg().toFile(tempPath);
@@ -69,5 +71,4 @@ export class AppService {
       fs.mkdirSync(path, { recursive: true });
     }
   }
-
 }

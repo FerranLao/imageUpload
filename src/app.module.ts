@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { ImageSchema, Image } from './schemas/image.schema';
 import { Task, TaskSchema } from './schemas/task.schema';
 
-
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost/tecnicaFerran'),
