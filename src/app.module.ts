@@ -7,7 +7,7 @@ import { Task, TaskSchema } from './schemas/task.schema';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost/tecnicaFerran'),
+    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/tecnicaFerran'),
     MongooseModule.forFeature([
       { name: Image.name, schema: ImageSchema },
       { name: Task.name, schema: TaskSchema },

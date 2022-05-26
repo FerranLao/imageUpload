@@ -39,17 +39,18 @@ export class AppService {
     return task;
   }
 
-  private async processImage(task, res: number, name: string, file: Buffer) {
+  async processImage(task, res: number, name: string, file: Buffer) {
     try {
       const tempDir = resolve(`temp/${name}${res}`);
-      const tempPath = tempDir + '/image';
+      const tempPath = tempDir + "/image";
+      // ? create the temp folder to store the image temporaly
       this.createFolders(tempDir);
 
       const created = await sharp(file).resize(res).jpeg().toFile(tempPath);
-
       const hash = md5(tempPath);
       const dir = resolve(`output/${name}/${res}`);
       const path = dir + `/${hash}.jpg`;
+      //? create the final folder for the image
       this.createFolders(dir);
       fs.renameSync(tempPath, path);
       await this.imageModel.create({
@@ -60,9 +61,13 @@ export class AppService {
       });
       task.path = path;
       task.status = TaskStatus.DONE;
-      task.save();
+      fs.rmdirSync(tempDir)
     } catch (err) {
-      console.log(err);
+      console.error(err)
+      task.error= err.message;
+      task.status = TaskStatus.ERROR
+    } finally {
+      task.save()
     }
   }
 

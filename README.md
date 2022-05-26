@@ -1,73 +1,115 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 
+  
+
 ```bash
+
 $ npm install
+
 ```
+
+  
 
 ## Running the app
 
+  
+
 ```bash
+
 # development
+
 $ npm run start
 
+  
+
 # watch mode
+
 $ npm run start:dev
 
+  
+
 # production mode
+
 $ npm run start:prod
+
 ```
+
+  
 
 ## Test
 
+  
+
 ```bash
+
 # unit tests
+
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Support
+## API
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```http
+GET /task/:taskId
+```
+recieves the Id and returns the corresponding task
 
-## Stay in touch
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `taskId` | `ObjectId` |_id of the resource to fetch|
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+response:
+```javascript
+{
+"_id": "628e76afe3e78c11b91ce7b7",
+"path": "/Users/.../output/800/3a17db08792cbd5ef6635cee72cec602.jpg", //only in status 'DONE'
+"status": "DONE",
+"error": 'Error MESSAGE'// only with status:error
+"createdAt": "2022-05-25T18:34:23.384Z",
+"updatedAt": "2022-05-25T18:34:23.452Z",
+"__v": 0
+}
+```
+##
+```http
+POST /task
+```
+Creates a task to resize and store the image, and trigger to all available resolutions (800, 1024).
+-   Request body must be a multipart request with a part named "file" containing file data.
 
-## License
+Response:
+```javascript
+{
 
-Nest is [MIT licensed](LICENSE).
+"path": "/Users/ferranlao/tecnicaParadigma/tecnica-paradigma/output/0000003057_15_1_1.jpeg/800",
+
+"status": "PENDING",
+
+"_id": "628f3d81da79b597d2af4393",
+
+"createdAt": "2022-05-26T08:42:41.846Z",
+
+"updatedAt": "2022-05-26T08:42:41.846Z",
+
+"__v": 0
+
+},
+
+{
+
+"path": "/Users/ferranlao/tecnicaParadigma/tecnica-paradigma/output/0000003057_15_1_1.jpeg/1024",
+
+"status": "PENDING",
+
+"_id": "628f3d81da79b597d2af4394",
+
+"createdAt": "2022-05-26T08:42:41.846Z",
+
+"updatedAt": "2022-05-26T08:42:41.846Z",
+
+"__v": 0
+
+}
+```
+
